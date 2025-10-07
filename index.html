@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Work Showcase</title>
+
+  <style>
+    /* ===== Base Styles ===== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      z-index: 0;
+    }
+
+    /* ===== Animated Gradient Background ===== */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, #0f0f1f, #001a33, #001f0f, #130033);
+      background-size: 300% 300%;
+      animation: gradientMove 15s ease infinite;
+      z-index: -2;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ===== Glow Overlay ===== */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(0,255,200,0.15), rgba(0,0,0,0.7));
+      z-index: -1;
+    }
+
+    h1 {
+      margin: 40px 0 10px;
+      font-size: 2.8rem;
+      text-align: center;
+      background: linear-gradient(45deg, #00f5a0, #00d9f5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glowText 3s infinite alternate;
+    }
+
+    @keyframes glowText {
+      from { text-shadow: 0 0 10px #00f5a0; }
+      to { text-shadow: 0 0 20px #00d9f5; }
+    }
+
+    /* ===== Search & Filters ===== */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin: 20px 0 30px;
+    }
+
+    input[type="text"] {
+      padding: 10px 15px;
+      border-radius: 30px;
+      border: none;
+      outline: none;
+      background: rgba(30, 30, 30, 0.8);
+      color: #fff;
+      width: 250px;
+      transition: box-shadow 0.3s, background 0.3s;
+    }
+
+    input[type="text"]:focus {
+      box-shadow: 0 0 10px #00d9f5;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 25px;
+      border: 1px solid #00d9f5;
+      background: rgba(255, 255, 255, 0.05);
+      color: #00d9f5;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: #00d9f5;
+      color: #000;
+      transform: scale(1.05);
+    }
+
+    /* ===== Project Grid ===== */
+    .projects-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 25px;
+      width: 90%;
+      max-width: 1300px;
+      padding-bottom: 60px;
+      transition: 0.4s;
+    }
+
+    .project-card {
+      background: rgba(28, 28, 28, 0.9);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 255, 200, 0.1);
+      transition: all 0.4s ease;
+      cursor: pointer;
+      opacity: 1;
+      transform: scale(1);
+      backdrop-filter: blur(6px);
+    }
+
+    .project-card.hide {
+      opacity: 0;
+      transform: scale(0.9);
+      pointer-events: none;
+    }
+
+    .project-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .project-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .project-name {
+      text-align: center;
+      padding: 12px;
+      font-weight: 500;
+      color: #00f5a0;
+    }
+
+    /* ===== Modal ===== */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-content {
+      background: #121212;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 700px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 0 25px rgba(0, 255, 200, 0.4);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .modal-content h2 {
+      margin-top: 15px;
+      color: #00f5a0;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #fff;
+      transition: color 0.3s ease;
+    }
+
+    .close-btn:hover {
+      color: #00f5a0;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      input[type="text"] { width: 200px; }
+      .project-card img { height: 120px; }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>My Work Showcase</h1>
+
+  <!-- ===== Controls ===== -->
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search projects..." />
+    <div class="filters">
+      <button class="filter-btn active" data-category="all">All</button>
+      <button class="filter-btn" data-category="web">Web</button>
+      <button class="filter-btn" data-category="mobile">Mobile</button>
+      <button class="filter-btn" data-category="uiux">UI/UX</button>
+      <button class="filter-btn" data-category="ai">AI</button>
+      <button class="filter-btn" data-category="games">Games</button>
+    </div>
+  </div>
+
+  <!-- ===== Projects Grid ===== -->
+  <div class="projects-container" id="projectsContainer"></div>
+
+  <!-- ===== Modal ===== -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeModal">&times;</span>
+      <img id="modalImg" src="" alt="Project Preview">
+      <h2 id="modalTitle"></h2>
+    </div>
+  </div>
+
+  <script>
+    const projectsContainer = document.getElementById('projectsContainer');
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const closeModal = document.getElementById('closeModal');
+    const searchInput = document.getElementById('searchInput');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+
+    // ===== Project Data =====
+    const categories = ['web', 'mobile', 'uiux', 'ai', 'games'];
+    const projects = [
+  {
+    name: "Analog Clock",
+    image: "images/analog-clock.png",
+    category: "web",
+    link: "https://nitesh-shaw-098.github.io/Analog-clock/",
+    description: "An analogue clock has a clock face with a dial of numbers from 1 to 12. It uses an hour hand and a minute hand that rotate in a clockwise direction around the numbers to show the time. On an analogue clock, the longer hand shows the minutes and the shorter hand shows the hours."
+  },
+  {
+    name: "Animated Doraemon",
+    image: "images/doraemon.png",
+    category: "web",
+    link: "https://nitesh-shaw-098.github.io/Doraemon/",
+    description:"This project is a fun front-end web project that draws and animates Doraemon using only HTML, CSS, and JavaScript. It includes interactive elements like speech bubbles, waving animation, and a responsive layout."
+  },
+  {
+    name: "Sky Jump",
+    image: "images/sky-jump.png",
+    category: "games",
+    link: "https://nitesh-shaw-098.github.io/Sky-Jump/",
+    description:"Welcome to My Awesome Game — a fun project built using HTML, CSS, and JavaScript in a single file! This game is live on GitHub Pages, so you can play it anytime, anywhere. 🚀"
+  },
+  {
+    name: "To Do List",
+    image: "images/to-do-list.png",
+    category: "ai",
+    link: "https://nitesh-shaw-098.github.io/To-Do-List/",
+    description:"A simple yet powerful To-Do List web app with reminders, notifications, recurring tasks, and import/export support.Built with HTML, TailwindCSS, and Vanilla JS."
+  },
+  {
+    name: "I❤️U animation",
+    image: "images/love.png",
+    category: "uiux",
+    link: "https://nitesh-shaw-098.github.io/I-LOVE-YOU-ANIMATION/",
+    description:"A beautiful SVG animation built with HTML, CSS, JavaScript, and powered by mo.js. The animation features smooth letter transitions, bursts, and heart effects with optional sound effects."
+  },
+  {
+    name: "Impress your crush",
+    image: "images/impress-your-crush.png",
+    category: "Games",
+    link: "https://nitesh-shaw-098.github.io/Impress-your-crush/",
+    description:"Make a cute, fun, and interactive web page to impress your crush — share a playful link that reveals messages, animations, and surprises. Lightweight, responsive, and easy to customize."
+  },
+  {
+    name: "Aur Calculator",
+    image: "images/aura-calculator.png",
+    category: "mobile",
+    link: "https://nitesh-shaw-098.github.io/Aura-Calculator/",
+    description:"A modern, responsive, and premium-style Calculator Web App with multiple modes (Standard & Converter). Designed with clean UI/UX principles, mobile responsiveness, and smooth interactions."
+  },
+  {
+    name: "M-Indicator - Mumbai Train Guide 🚊",
+    image: "images/m-indicator.png",
+    category: "web",
+    link: "https://nitesh-shaw-098.github.io/m-indicator-app/",
+    description:"A comprehensive, responsive web application for Mumbai local train schedules and live tracking, featuring a beautiful sky blue theme and modern user interface."
+  }
+];
+
+
+    // ===== Render Projects =====
+    const renderProjects = (filter = 'all', searchTerm = '') => {
+      projectsContainer.innerHTML = '';
+      projects.forEach(project => {
+        const matchCategory = filter === 'all' || project.category === filter;
+        const matchSearch = project.name.toLowerCase().includes(searchTerm.toLowerCase());
+        if (matchCategory && matchSearch) {
+          const card = document.createElement('div');
+          card.classList.add('project-card');
+          card.setAttribute('data-category', project.category);
+          card.innerHTML = `
+            <img src="${project.image}" alt="${project.name}">
+            <div class="project-name">${project.name}</div>
+          `;
+          card.addEventListener('click', () => {
+            modalImg.src = project.image;
+            modalTitle.innerHTML = `<a href="${project.link}" target="_blank" style="color:#00f5a0; text-decoration:none;">${project.name}</a>
+            <p style="color:#aaa; margin-top:8px;">${project.description}</p>`;
+            modal.style.display = 'flex';
+          });
+          projectsContainer.appendChild(card);
+        }
+      });
+    };
+
+    renderProjects();
+
+    // ===== Filter Buttons =====
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderProjects(btn.dataset.category, searchInput.value);
+      });
+    });
+
+    // ===== Search Input =====
+    searchInput.addEventListener('input', e => {
+      const activeCategory = document.querySelector('.filter-btn.active').dataset.category;
+      renderProjects(activeCategory, e.target.value);
+    });
+
+    // ===== Close Modal =====
+    closeModal.addEventListener('click', () => modal.style.display = 'none');
+    window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+  </script>
+</body>
+</html>
