@@ -8,7 +8,7 @@ Each project features a preview image, project name, and a modal window to displ
 
 ## 🚀 Features
 
-- 🖼️ **50 Project Listings:** Each project includes an image and title.  
+- 🖼️ **My Work Showcase:** Each project includes an image and title.  
 - 🪄 **Interactive Modal Preview:** Click any project to view a larger preview in a pop-up modal.  
 - 🎨 **Modern Design:** A sleek, responsive, and gradient-themed layout.  
 - 🧭 **Category Filters:** Quickly view projects by type (Web, Mobile, UI/UX, AI, Games).  
@@ -117,8 +117,8 @@ Just upload the project folder and you’re live in seconds 🚀.
 
 **Your Name**
 Frontend Developer & Designer
-🌐 [yourwebsite.com](https://yourwebsite.com)
-📧 [yourname@email.com](mailto:yourname@email.com)
+🌐 [nitesh-shaw-098.com](https://nitesh-shaw-dev-fx6z2d9.gamma.site/)
+📧 [niteshshaw719@email.com](mailto:niteshshaw719@email.com)
 
 ---
 
