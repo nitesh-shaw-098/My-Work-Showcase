@@ -17,6 +17,16 @@ Each project features a preview image, project name, and a modal window to displ
 
 ---
 
+## 🎯 Live Demo
+
+You can view the live version of this portfolio here:  
+👉 **[Live Demo](https://your-live-portfolio-link.com)**
+
+This hosted version allows you to explore all 50 projects interactively —  
+click on any project to view a larger preview and detailed information in a modal window.
+
+---
+
 ## 🏗️ Project Structure
 
 ```
